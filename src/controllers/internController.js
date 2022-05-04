@@ -1,7 +1,7 @@
-const InterModel = require('../models/internModels')
+const InternModel = require('../models/internModel')
 const CollegeModel = require('../models/collegeModel')
 const validator = require('../validators/validator');
-const internModels = require('../models/internModels');
+
 
 const createIntern = async function (req, res) {
     try {
@@ -9,47 +9,67 @@ const createIntern = async function (req, res) {
         let data = req.body
 
         if (Object.keys(data).length == 0) {
-            return res.status(400).send({ status: false, msg: 'bad request, no data provided' })
+            return res.status(400).send({ status: false, msg: 'Bad request, no data provided' })
         };
+
         const { name, email, mobile, collegeId } = data;
 
+        // Intern Name Is Mandatory...
         if (!validator.isValid(name)) {
-            return res.status(400).send({ status: false, msg: 'Intern name is required' })
+            return res.status(404).send({ status: false, msg: "Intern name is required" })
         };
+
+        // Email is Mandatory...
         if (!validator.isValid(email)) {
-            return res.status(400).send({ status: false, msg: "Email is required " })
-        }
-        let duplicatEmail = await InterModel.findOne({ email: data.email })
-        if (duplicatEmail) {
-            return res.status(400).send({ status: false, msg: 'Email is already exist' })
-        }
+            return res.status(404).send({ status: false, msg: "Email is required" })
+        };
+
+        // Email is Unique...
+        let duplicateEmail = await InternModel.findOne({ email: data.email })
+        if (duplicateEmail) {
+            return res.status(400).send({ status: false, msg: 'Email already exist' })
+        };
+
+        // For a Valid Email...
         if (!(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(data.email))) {
-            return res.status(400).send({ status: false, message: ' email should be a valid' })
-        }
+            return res.status(400).send({ status: false, message: ' Email should be a valid' })
+        };
+
+        // Mobile Number is Mandatory...
         if (!validator.isValid(mobile)) {
-            return res.status(400).send({ status: false, msg: 'Mobile number is required' })
-        }
-        let duplicateMobile = await InterModel.findOne({ mobile: data.mobile })
-        if (duplicateMobile) {
-            return res.status(400).send({ status: false, msg: 'Mobile number already exist' })
-        }
-        if (mobile.length != 10) {
-            return res.status(400).send({ status: false, msg: " mobile number should be valid" })
-        }
-        if (!validator.isValid(collegeId)) {
-            return res.status(400).send({ status: false, msg: 'CollegeId is required' })
-        }
-        if (collegeId.length != 24) {
-            return res.status(400).send({ status: false, msg: " collegeId should be valid" })
+            return res.status(404).send({ status: false, msg: 'Mobile number is required' })
         }
 
-        let savedData = await InterModel.create(data)
-        res.status(201).send({ status: true, msg: 'Intern successfully enroled', deta: savedData })
+        // Mobile Number is Unique...
+        let duplicateMobile = await InternModel.findOne({ mobile: data.mobile })
+        if (duplicateMobile) {
+            return res.status(400).send({ status: false, msg: 'Mobile number already exist' })
+        };
+
+        // Mobile Number is Valid...
+
+        if (mobile.length != 10) {
+        return res.status(400).send({ status: false, msg: " mobile number should be valid" })
+        };
+
+        // College Id is Mandatory...
+        if (!validator.isValid(collegeId)) {
+            return res.status(404).send({ status: false, msg: "College id Must be persent" })
+        };
+        
+        let collegeIdMatching = await CollegeModel.findById({ _id: data.collegeId })
+        if (!collegeIdMatching) {
+            return res.status(404).send({ status: false, msg: " College Id Doesn't exists " })
+        };
+
+
+        let savedData = await InternModel.create(data)
+        res.status(201).send({ status: true, msg: 'Intern successfully enrolled', data: savedData })
     }
     catch (err) {
         return res.status(500).send({ status: false, msg: err.message })
     }
 
-}
+};
 
-module.exports.createIntern = createIntern
+module.exports.createIntern = createIntern;
