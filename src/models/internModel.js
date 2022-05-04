@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const interSchema = new mongoose.Schema({
+const internSchema = new mongoose.Schema({
 
     name: {
         type: String,
@@ -34,4 +34,4 @@ const interSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('InternDB', interSchema);
+module.exports = mongoose.model('InternDB', internSchema);
