@@ -10,15 +10,15 @@ router.get("/test-me", function (req, res) {
 
 //---------------------------------------------1st API ----------------------***
 
-router.post('/functionup/colleges', CollegeController)
+router.post('/functionup/colleges', CollegeController.createCollege)
 
 //---------------------------------------------2nd API --------------------------------***
 
-router.post('/functionup/interns', InternComtroller)
+router.post('/functionup/interns', InternComtroller.createIntern)
 
 //---------------------------------------------3rd API--------------------------------***
 
-router.get('/functionup/collegeDetails',CollegeController)
+// router.get('/functionup/collegeDetails',CollegeController)
 
 
 
