@@ -11,12 +11,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-mongoose.connect("mongodb+srv://khushboobabil12:khushboo12345@cluster0.j9hng.mongodb.net/OpenToInternData", {useNewUrlParser: true})
-    .then(() => console.log('mongodb running on 27017'))
+mongoose.connect("mongodb+srv://Sumit23199702:GNDTTobP3czLn1Hf@cluster0.octcn.mongodb.net/groupXDatabase", {useNewUrlParser: true})
+    .then(() => console.log('mongodb is connected'))
     .catch(err => console.log(err))
 
 app.use('/', route);
 
-app.listen(process.env.PORT || 3000, function() {
-	console.log('Express app running on port ' + (process.env.PORT || 3000))
+app.listen(process.env.PORT || 4000, function() {
+	console.log('Express app running on port ' + (process.env.PORT || 4000))
 });
