@@ -38,7 +38,7 @@ const createIntern = async function (req, res) {
         // Mobile Number is Mandatory...
         if (!validator.isValid(mobile)) {
             return res.status(404).send({ status: false, msg: 'Mobile number is required' })
-        }
+        };
 
         // Mobile Number is Unique...
         let duplicateMobile = await InternModel.findOne({ mobile: data.mobile })
