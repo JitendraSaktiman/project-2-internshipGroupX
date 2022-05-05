@@ -19,7 +19,7 @@ router.post('/functionup/interns', InternComtroller.createIntern)
 
 //---------------------------------------------3rd API--------------------------------***
 
-// router.get('/functionup/collegeDetails',CollegeController)
+router.get('/functionup/collegeDetails', CollegeController.getCollegeDetails)
 
 
 

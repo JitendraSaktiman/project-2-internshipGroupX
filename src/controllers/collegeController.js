@@ -1,5 +1,5 @@
 const CollegeModel = require('../models/collegeModel');
-// const InternModel = require('../models/internModel');
+const InternModel = require('../models/internModel');
 const validator = require('../validators/validator');
 
 
@@ -54,18 +54,34 @@ module.exports.createCollege = createCollege;
 
 //---------------------------------------get College--------------------**
 
-// const collegeDetails = async function (req, res) {
-//     try {
+const getCollegeDetails = async function (req, res) {
+    try {
 
-//         let collegeName = req.query.collegeName
+        const collegeName = req.query.collegeName
 
-//         if (!collegeName) {
-//             return res.status(400).send({ status: false, msg: ' collegeName is required' })
-//         }
-//         let getDetail = await collegeModel.find(collegeDetails).populate()
+        if (!collegeName) {
+            return res.status(400).send({ status: false, msg: ' collegeName is required' })
+        }
+           
+        const getDataOfCollege = await CollegeModel.findOne({ name:collegeName, isDeleted: false })
+        if (!getDataOfCollege) {
+            return res.status(404).send({ status: false, msg: "College Details Not found" })
+        }
 
-//     }
-//     catch (err) {
-//         return res.status(500).send({ status: false, msg: err.message })
-//     }
-// }
+        const collegeId = getDataOfCollege._id
+        const detailsOfIntern = await InternModel.find({collegeId:collegeId, isDeleted:false}).select({name:1, email:1,mobile:1})
+        
+        let collegeDetails = {
+            name:getDataOfCollege.name,
+            fullName:getDataOfCollege.fullName,
+            logoLink:getDataOfCollege.logoLink,
+            interests:detailsOfIntern
+         }
+         res.status(200).send({status:true, data:collegeDetails})
+    }
+
+    catch (err) {
+        return res.status(500).send({ status: false, msg: err.message })
+    }
+}
+module.exports.getCollegeDetails = getCollegeDetails
