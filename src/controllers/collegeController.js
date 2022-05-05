@@ -47,7 +47,7 @@ const createCollege = async function (req, res) {
         };
 
         // logoLink is Unique...
-        let duplicateLogoLink = await collegeModel.findOne({logoLink:data.logoLink}) 
+        let duplicateLogoLink = await CollegeModel.findOne({logoLink:data.logoLink}) 
         if(duplicateLogoLink){
             return res.status(400).send({ status: false, msg: "LogoLink already exist" })
         };
