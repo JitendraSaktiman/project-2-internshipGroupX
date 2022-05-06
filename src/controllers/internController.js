@@ -16,12 +16,12 @@ const createIntern = async function (req, res) {
 
         // Intern Name Is Mandatory...
         if (!validator.isValid(name)) {
-            return res.status(404).send({ status: false, msg: "Intern name is required" })
+            return res.status(400).send({ status: false, msg: "Intern name is required" })
         };
 
         // Email is Mandatory...
         if (!validator.isValid(email)) {
-            return res.status(404).send({ status: false, msg: "Email is required" })
+            return res.status(400).send({ status: false, msg: "Email is required" })
         };
 
         // Email is Unique...
@@ -37,7 +37,7 @@ const createIntern = async function (req, res) {
 
         // Mobile Number is Mandatory...
         if (!validator.isValid(mobile)) {
-            return res.status(404).send({ status: false, msg: 'Mobile number is required' })
+            return res.status(400).send({ status: false, msg: 'Mobile number is required' })
         };
 
         // Mobile Number is Unique...
@@ -49,14 +49,14 @@ const createIntern = async function (req, res) {
         // Mobile Number is Valid...
 
         if (mobile.length != 10) {
-        return res.status(400).send({ status: false, msg: " mobile number should be valid" })
+            return res.status(400).send({ status: false, msg: " mobile number should be valid" })
         };
 
         // College Id is Mandatory...
         if (!validator.isValid(collegeId)) {
             return res.status(404).send({ status: false, msg: "College id Must be persent" })
         };
-        
+
         let collegeIdMatching = await CollegeModel.findById({ _id: data.collegeId })
         if (!collegeIdMatching) {
             return res.status(404).send({ status: false, msg: " College Id Doesn't exists " })

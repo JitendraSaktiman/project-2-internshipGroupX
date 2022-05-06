@@ -31,8 +31,8 @@ const createCollege = async function (req, res) {
         };
 
         // Full Name is Unique...
-        let duplicateFullName = await CollegeModel.findOne({fullName:data.fullName})
-        if(duplicateFullName){
+        let duplicateFullName = await CollegeModel.findOne({ fullName: data.fullName })
+        if (duplicateFullName) {
             return res.status(400).send({ status: false, msg: "Full Name already exist" })
         };
 
@@ -47,8 +47,8 @@ const createCollege = async function (req, res) {
         };
 
         // logoLink is Unique...
-        let duplicateLogoLink = await CollegeModel.findOne({logoLink:data.logoLink}) 
-        if(duplicateLogoLink){
+        let duplicateLogoLink = await CollegeModel.findOne({ logoLink: data.logoLink })
+        if (duplicateLogoLink) {
             return res.status(400).send({ status: false, msg: "LogoLink already exist" })
         };
 
@@ -74,22 +74,22 @@ const getCollegeDetails = async function (req, res) {
         if (!collegeName) {
             return res.status(400).send({ status: false, msg: ' collegeName is required' })
         };
-           
-        const getDataOfCollege = await CollegeModel.findOne({ name:collegeName, isDeleted: false })
+
+        const getDataOfCollege = await CollegeModel.findOne({ name: collegeName, isDeleted: false })
         if (!getDataOfCollege) {
             return res.status(404).send({ status: false, msg: "College Details Not found" })
         };
 
         const collegeId = getDataOfCollege._id
-        const detailsOfIntern = await InternModel.find({collegeId:collegeId, isDeleted:false}).select({name:1, email:1,mobile:1});
-        
+        const detailsOfIntern = await InternModel.find({ collegeId: collegeId, isDeleted: false }).select({ name: 1, email: 1, mobile: 1 });
+
         let collegeDetails = {
-            name:getDataOfCollege.name,
-            fullName:getDataOfCollege.fullName,
-            logoLink:getDataOfCollege.logoLink,
-            interests:detailsOfIntern
-         };
-         res.status(200).send({status:true, data:collegeDetails})
+            name: getDataOfCollege.name,
+            fullName: getDataOfCollege.fullName,
+            logoLink: getDataOfCollege.logoLink,
+            interests: detailsOfIntern
+        };
+        res.status(200).send({ status: true, data: collegeDetails })
     }
 
     catch (err) {
