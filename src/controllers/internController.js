@@ -12,7 +12,7 @@ const createIntern = async function (req, res) {
             return res.status(400).send({ status: false, msg: 'Bad request, no data provided' })
         };
 
-        const { name, email, mobile, collegeId } = data;
+        const { name, email, mobile, collegeName } = data;
 
         // Intern Name Is Mandatory...
         if (!validator.isValid(name)) {
@@ -52,20 +52,19 @@ const createIntern = async function (req, res) {
             return res.status(400).send({ status: false, msg: " mobile number should be valid" })
         };
 
-        // College Id is Mandatory...
-        if (!validator.isValid(collegeId)) {
-            return res.status(400).send({ status: false, msg: "College id Must be persent" })
+        // College Name is Mandatory...
+        if (!validator.isValid(collegeName)) {
+            return res.status(400).send({ status: false, msg: "College Name is required" })
         };
 
-        let collegeIdMatching = await CollegeModel.findById({ _id: data.collegeId })
-        if (!collegeIdMatching) {
-            return res.status(400).send({ status: false, msg: " College Id Doesn't exists " })
-        };
+        const collegeId = await CollegeModel.findOne({ name: collegeName })
+        const newDataCollege = collegeId._id
 
-
-        let savedData = await InternModel.create(data)
-        res.status(201).send({ status: true, msg: 'Intern successfully enrolled', data: savedData })
+        const savedData = { name: data.name, email: data.email, mobile: data.mobile, collegeId: newDataCollege }
+        const resultIntern = await InternModel.create(savedData)
+        res.status(201).send(resultIntern)
     }
+
     catch (err) {
         return res.status(500).send({ status: false, msg: err.message })
     }
