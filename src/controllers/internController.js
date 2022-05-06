@@ -54,12 +54,12 @@ const createIntern = async function (req, res) {
 
         // College Id is Mandatory...
         if (!validator.isValid(collegeId)) {
-            return res.status(404).send({ status: false, msg: "College id Must be persent" })
+            return res.status(400).send({ status: false, msg: "College id Must be persent" })
         };
 
         let collegeIdMatching = await CollegeModel.findById({ _id: data.collegeId })
         if (!collegeIdMatching) {
-            return res.status(404).send({ status: false, msg: " College Id Doesn't exists " })
+            return res.status(400).send({ status: false, msg: " College Id Doesn't exists " })
         };
 
 

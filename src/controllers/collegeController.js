@@ -77,7 +77,7 @@ const getCollegeDetails = async function (req, res) {
 
         const getDataOfCollege = await CollegeModel.findOne({ name: collegeName, isDeleted: false })
         if (!getDataOfCollege) {
-            return res.status(404).send({ status: false, msg: "College Details Not found" })
+            return res.status(400).send({ status: false, msg: "College Details Not found" })
         };
 
         const collegeId = getDataOfCollege._id
